@@ -1,0 +1,9 @@
+{
+  "name": "MOTION AI Video Studio",
+  "short_name": "MOTION AI",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0b12",
+  "theme_color": "#7848c9",
+  "description": "A mobile-friendly AI video creation prototype"
+}

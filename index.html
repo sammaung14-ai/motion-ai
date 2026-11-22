@@ -129,7 +129,8 @@ function toggleLang(){
  document.getElementById('resultTitle').textContent=language==='my'?'ရလဒ်':'Result';
 }
 
-function generate(){
+
+async function generate(){
  const prompt=document.getElementById('prompt').value.trim();
  const imageFile=document.getElementById('imageInput').files[0];
  const result=document.getElementById('result');
@@ -138,15 +139,82 @@ function generate(){
   result.textContent=language==='my'?'ဗီဒီယိုအကြောင်း အရင်ရေးပေးပါ။':'Please enter a video description.';
   return;
  }
+
  if(mode==='image'&&!imageFile){
   result.textContent=language==='my'?'ဓာတ်ပုံတစ်ပုံ အရင်တင်ပေးပါ။':'Please upload an image first.';
   return;
  }
 
- result.textContent=language==='my'
- ?'သင့်ရွေးချယ်မှုများ အဆင်သင့်ဖြစ်ပါပြီ။ တကယ်တမ်း AI ဗီဒီယိုထုတ်လုပ်ရန် Video AI API နှင့် Backend ချိတ်ဆက်ရန် လိုအပ်ပါသေးသည်။'
- :'Your settings are ready. A Video AI API and backend connection are still required to generate an actual video.';
+ result.textContent=language==='my'?'ဗီဒီယို ဖန်တီးနေပါတယ်။ ခဏစောင့်ပါ...':'Generating video. Please wait...';
+
+ try {
+  let image=null;
+
+  if(mode==='image' && imageFile){
+   image=await new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=reject;
+    reader.readAsDataURL(imageFile);
+   });
+  }
+
+  const response=await fetch('/api/video',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({
+    prompt,
+    image,
+    seconds:'5',
+    aspect_ratio:'16:9'
+   })
+  });
+
+  const data=await response.json();
+
+  if(!response.ok) throw new Error(data.error || JSON.stringify(data));
+
+  const videoId=data.video_id || data.id;
+  if(!videoId) throw new Error('Video ID not returned: '+JSON.stringify(data));
+
+  let videoData=data;
+
+  for(let i=0;i<60;i++){
+   if(videoData.status==='completed' && videoData.url) break;
+   if(videoData.status==='failed') throw new Error(videoData.error || 'Video generation failed');
+
+   await new Promise(resolve=>setTimeout(resolve,5000));
+
+   const check=await fetch('/api/video/'+encodeURIComponent(videoId));
+   videoData=await check.json();
+
+   if(!check.ok) throw new Error(videoData.error || JSON.stringify(videoData));
+  }
+
+  if(!videoData.url) throw new Error('Video is not ready yet. Please try again.');
+
+  result.innerHTML='';
+  const video=document.createElement('video');
+  video.src=videoData.url;
+  video.controls=true;
+  video.playsInline=true;
+  video.style.width='100%';
+
+  const download=document.createElement('a');
+  download.href=videoData.url;
+  download.download='motion-ai-video.mp4';
+  download.textContent='Download Video';
+  download.style.display='block';
+  download.style.marginTop='12px';
+
+  result.appendChild(video);
+  result.appendChild(download);
+
+ } catch(error) {
+  result.textContent=(language==='my'?'အမှားဖြစ်နေပါတယ်: ':'Error: ')+error.message;
+ }
 }
+
 </script>
 </body>
 </html>

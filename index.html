@@ -1,72 +1,183 @@
+
 <!DOCTYPE html>
 <html lang="my">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#8b101b">
-<title>Myanmar Mall</title>
+<title>Play & Earn</title>
 <style>
-:root{--red:#8b101b;--gold:#e5b94f;--ink:#21191a;--cream:#fffaf1}
-*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,"Noto Sans Myanmar",sans-serif}
-header{background:linear-gradient(120deg,#650b14,#a51b27);color:white;padding:18px 16px;text-align:center}
-.brand{display:flex;align-items:center;justify-content:center;gap:10px}.logo{width:48px;height:48px;border-radius:13px;background:linear-gradient(140deg,#ffe9a1,#c58a16);display:grid;place-items:center;color:#78101a;font-size:27px}
-h1{margin:0;color:#ffdc82;font-size:27px}header p{margin:7px 0 0;color:#f7e8df}
-nav{position:sticky;top:0;z-index:5;background:#241719;display:flex;justify-content:center;gap:8px;padding:10px;flex-wrap:wrap}
-button{border:0;border-radius:9px;padding:11px 14px;background:var(--gold);color:#281b08;font-weight:bold;cursor:pointer}nav button{background:#4b3436;color:white}nav button.active{background:var(--gold);color:#281b08}
-main{max-width:1050px;margin:auto;padding:16px}.banner{border-radius:17px;padding:24px;background:linear-gradient(115deg,#85101b,#d29a2e);color:white;margin:12px 0 18px}.banner h2{font-size:26px;margin:0 0 8px}.banner p{line-height:1.6;margin:0 0 15px}
-.search{width:100%;padding:14px;border:1px solid #e0d5c4;border-radius:10px;font-size:16px;background:white}
-.categories{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.categories button{background:#f0e2c4}.categories button.selected{background:#8b101b;color:white}
-.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.product,.panel{background:white;border:1px solid #eee2d0;border-radius:13px;padding:11px;box-shadow:0 3px 12px #44220b0a}.product img{width:100%;height:145px;object-fit:cover;border-radius:9px;background:#f4eee5}.product h3{font-size:16px;margin:9px 0 5px}.muted{color:#756c62;font-size:13px}.price{color:#971a24;font-weight:bold;margin:7px 0}.product button{width:100%;margin-top:7px}
-section.page{display:none}section.page.show{display:block}.panel{padding:16px;margin:14px 0}input,textarea,select{width:100%;padding:12px;margin:6px 0 12px;border:1px solid #d9cdbb;border-radius:8px;font-size:15px;background:white;color:#241719}textarea{min-height:80px}
-.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.cart-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #eee}.cart-row button{padding:7px 10px;background:#eee}.notice{background:#fff3d6;border-radius:9px;padding:12px;line-height:1.6;font-size:14px}.danger{background:#9d2730;color:white}.small{font-size:12px;color:#766b60}footer{text-align:center;background:#241719;color:#eee;padding:22px;margin-top:28px}
-@media(min-width:650px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}.product img{height:165px}}
+*{box-sizing:border-box}
+body{margin:0;background:#10152b;color:white;font-family:Arial,sans-serif}
+header{padding:22px;background:#202c50;text-align:center}
+h1{color:#ffe36e;margin:0}
+header p{color:#cbd5ff}
+.balance{background:linear-gradient(120deg,#6653db,#2479c9);margin:16px;padding:22px;border-radius:18px;text-align:center}
+.balance h2{margin:8px;font-size:30px;color:#ffe36e}
+nav{display:flex;gap:8px;padding:12px}
+button{border:0;border-radius:12px;padding:12px;background:#6653db;color:white;font-weight:bold;cursor:pointer}
+nav button{flex:1}
+main{padding:12px}
+.games{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.game{background:#202c50;border-radius:16px;padding:18px 8px;text-align:center;cursor:pointer}
+.game span{font-size:35px}
+.game h3{font-size:15px}
+.panel{background:#202c50;padding:20px;border-radius:16px;margin-top:15px}
+input{width:100%;padding:13px;border-radius:10px;border:0;margin:10px 0;font-size:17px}
+.hidden{display:none}
+#result{color:#ffe36e;min-height:25px}
+footer{text-align:center;color:#9ba8ca;padding:25px}
 </style>
 </head>
 <body>
-<header><div class="brand"><div class="logo">🛍</div><div><h1>Myanmar Mall</h1><div style="color:#ffe4a1;font-size:12px;letter-spacing:2px">SHOP SMART · LIVE BETTER</div></div></div><p>မြန်မာနိုင်ငံနှင့် နိုင်ငံတကာအတွက် အွန်လိုင်းဈေးဝယ်ဆိုင်</p></header>
+<header>
+<h1>🎮 PLAY & EARN</h1>
+<p>ဂိမ်းကစားပါ • အမှတ်စုပါ</p>
+</header>
+
+<div class="balance">
+<div>သင့်ရဲ့ လက်ရှိအမှတ်</div>
+<h2 id="points">0 P</h2>
+<div>Demo Wallet</div>
+</div>
+
 <nav>
-<button class="active" onclick="showPage('home',this)">ပင်မ</button>
-<button onclick="showPage('cart',this)">🛒 ခြင်းတောင်း (<span id="cartCount">0</span>)</button>
-<button onclick="showPage('admin',this)">Admin</button>
+<button onclick="showHome()">ဂိမ်းများ</button>
+<button onclick="showWallet()">Wallet</button>
 </nav>
+
 <main>
-<section id="home" class="page show">
-<div class="banner"><h2>Myanmar Mall မှ ကြိုဆိုပါတယ်</h2><p>သင်နှစ်သက်ရာ ပစ္စည်းများကို လွယ်ကူစွာ ရှာဖွေဝယ်ယူလိုက်ပါ။<br>ပစ္စည်းအသစ်များနှင့် အထူးလျှော့ဈေးများကို ဒီမှာကြည့်နိုင်ပါတယ်။</p><button onclick="document.getElementById('productGrid').scrollIntoView({behavior:'smooth'})">ယခုဝယ်ယူမယ်</button></div>
-<input id="search" class="search" placeholder="🔍 ပစ္စည်းအမည်ဖြင့် ရှာရန်..." oninput="renderProducts()">
-<h3>ပစ္စည်းအမျိုးအစား</h3><div class="categories" id="categories"></div>
-<h3>🛍️ ရောင်းချနေသော ပစ္စည်းများ</h3><div id="productGrid" class="products"></div>
+<section id="home">
+<h2>🎯 ဂိမ်းရွေးပါ</h2>
+<div class="games">
+<div class="game" onclick="startGame('guess')"><span>🔢</span><h3>နံပါတ်ခန့်မှန်း</h3></div>
+<div class="game" onclick="startGame('quiz')"><span>🧠</span><h3>ဗဟုသုတ Quiz</h3></div>
+<div class="game" onclick="startGame('memory')"><span>🃏</span><h3>Memory Game</h3></div>
+<div class="game" onclick="startGame('reaction')"><span>⚡</span><h3>Reaction Tap</h3></div>
+<div class="game" onclick="startGame('puzzle')"><span>🧩</span><h3>Puzzle</h3></div>
+<div class="game" onclick="startGame('snake')"><span>🐍</span><h3>Snake</h3></div>
+<div class="game" onclick="startGame('tictactoe')"><span>⭕</span><h3>Tic Tac Toe</h3></div>
+<div class="game" onclick="startGame('bubble')"><span>🫧</span><h3>Bubble</h3></div>
+<div class="game" onclick="startGame('match')"><span>💎</span><h3>Match 3</h3></div>
+<div class="game" onclick="startGame('2048')"><span>🔲</span><h3>2048</h3></div>
+</div>
 </section>
-<section id="cart" class="page"><h2>🛒 ဝယ်ယူမည့်ပစ္စည်းများ</h2><div class="panel" id="cartItems"></div><div class="panel"><div class="row"><label>ငွေကြေး<select id="currency" onchange="renderCart();renderProducts()"><option value="MMK">မြန်မာကျပ် (MMK)</option><option value="USD">US Dollar (USD)</option></select></label><label>ငွေလဲနှုန်း (MMK / USD)<input id="rate" type="number" value="3500" min="1" onchange="renderCart();renderProducts()"></label></div><h3 id="cartTotal">စုစုပေါင်း: 0 MMK</h3><h3>မှာယူသူ အချက်အလက်</h3><input id="buyerName" placeholder="အမည်"><input id="buyerPhone" placeholder="ဖုန်းနံပါတ်"><textarea id="buyerAddress" placeholder="ပို့ဆောင်မည့်လိပ်စာ"></textarea><label>ငွေပေးချေမှု<select id="payment"><option>ပစ္စည်းရောက်မှ ငွေချေ (COD)</option><option>KBZPay</option><option>WavePay</option><option>Visa / Mastercard (ချိတ်ဆက်ရန်လိုအပ်)</option></select></label><button onclick="submitOrder()">အော်ဒါတင်ရန်</button><p class="small">မှတ်ချက် - ဤနမူနာတွင် အော်ဒါကို ဒီ Browser ထဲတွင်သာ မှတ်တမ်းတင်သည်။ တကယ့်အော်ဒါလက်ခံရန် Server ချိတ်ဆက်ရပါမည်။</p></div><div id="orderResult"></div></section>
-<section id="admin" class="page"><h2>🔐 ဆိုင်ပိုင်ရှင် Admin</h2><div class="notice">ဤ Admin စာမျက်နှာသည် နမူနာအဆင့်သာ ဖြစ်သည်။ လက်ရှိတွင် Login လုံခြုံရေးမပါသေးသဖြင့် အများသုံး Website ပေါ်တွင် မတင်မီ Server-side Admin Login ထည့်ရန်လိုသည်။</div><div class="panel"><h3>ပစ္စည်းအသစ်တင်ရန်</h3><input id="pName" placeholder="ပစ္စည်းအမည်"><input id="pPrice" type="number" min="0" placeholder="ဈေးနှုန်း (MMK)"><select id="pCategory"><option>အဝတ်အစား</option><option>ဖုန်းပစ္စည်း</option><option>အလှကုန်</option><option>အိမ်သုံးပစ္စည်း</option><option>အစားအသောက်</option><option>အခြား</option></select><textarea id="pDescription" placeholder="ပစ္စည်းအကြောင်းအရာ"></textarea><label>ပစ္စည်းဓာတ်ပုံ</label><input id="pImage" type="file" accept="image/*"><button onclick="addProduct()">ပစ္စည်းတင်မည်</button></div><div class="panel"><h3>ပစ္စည်းစာရင်း</h3><div id="adminList"></div><button class="danger" onclick="clearProducts()">ပစ္စည်းအားလုံးဖျက်ရန်</button></div></section>
+
+<section id="play" class="hidden panel">
+<button onclick="showHome()">← နောက်သို့</button>
+<h2 id="gameTitle">Game</h2>
+<div id="gameArea"></div>
+<p id="result"></p>
+</section>
+
+<section id="wallet" class="hidden panel">
+<h2>👛 My Wallet</h2>
+<p>လက်ရှိ Demo အမှတ်</p>
+<h2 id="walletPoints">0 P</h2>
+<p>ငွေထုတ်ခြင်းနှင့် KBZPay ချိတ်ဆက်မှုကို နောက်ဗားရှင်းတွင် ထည့်သွင်းပါမည်။</p>
+</section>
 </main>
-<footer><strong>Myanmar Mall</strong><p>Premium Online Shopping</p>© 2026 Myanmar Mall</footer>
+<footer>PLAY & EARN © 2026</footer>
+
 <script>
-const defaults=[
-{id:1,name:"နမူနာ အင်္ကျီ",price:25000,category:"အဝတ်အစား",description:"အရည်အသွေးကောင်း အင်္ကျီ",image:""},
-{id:2,name:"ဖုန်းအဖုံး",price:12000,category:"ဖုန်းပစ္စည်း",description:"ဖုန်းအတွက် အကာအကွယ်",image:""},
-{id:3,name:"အလှကုန်",price:18000,category:"အလှကုန်",description:"နေ့စဉ်အသုံးပြုနိုင်သော အလှကုန်",image:""},
-{id:4,name:"အိမ်သုံးပစ္စည်း",price:30000,category:"အိမ်သုံးပစ္စည်း",description:"အိမ်သုံးအတွက် အသုံးဝင်သောပစ္စည်း",image:""}
+let points=Number(localStorage.getItem("pe_points")||0);
+let secret=0,question=0,first=null;
+function update(){
+document.getElementById("points").textContent=points+" P";
+document.getElementById("walletPoints").textContent=points+" P";
+localStorage.setItem("pe_points",points);
+}
+function showHome(){
+document.getElementById("home").classList.remove("hidden");
+document.getElementById("play").classList.add("hidden");
+document.getElementById("wallet").classList.add("hidden");
+}
+function showWallet(){
+document.getElementById("home").classList.add("hidden");
+document.getElementById("play").classList.add("hidden");
+document.getElementById("wallet").classList.remove("hidden");
+update();
+}
+function win(n=10){
+points+=n;update();
+document.getElementById("result").textContent="🎉 အောင်မြင်ပါတယ်! +"+n+" P";
+}
+function startGame(game){
+document.getElementById("home").classList.add("hidden");
+document.getElementById("wallet").classList.add("hidden");
+document.getElementById("play").classList.remove("hidden");
+let area=document.getElementById("gameArea");
+let result=document.getElementById("result");
+result.textContent="";
+let titles={guess:"နံပါတ်ခန့်မှန်း",quiz:"Quiz",memory:"Memory",reaction:"Reaction Tap",puzzle:"Puzzle",snake:"Snake",tictactoe:"Tic Tac Toe",bubble:"Bubble",match:"Match 3",2048:"2048"};
+document.getElementById("gameTitle").textContent=titles[game];
+if(game==="guess"){
+secret=Math.floor(Math.random()*10)+1;
+area.innerHTML='<p>၁ မှ ၁၀ အတွင်း နံပါတ်ကို ခန့်မှန်းပါ။</p><input id="answer" type="number" min="1" max="10" placeholder="နံပါတ်ထည့်ပါ"><button onclick="guess()">စစ်ဆေးမယ်</button>';
+}
+else if(game==="quiz"){
+question=Math.floor(Math.random()*2);
+let qs=[
+["မြန်မာနိုင်ငံ၏ မြို့တော်က ဘာလဲ?",["ရန်ကုန်","နေပြည်တော်","မန္တလေး"],1],
+["တစ်ပတ်မှာ ဘယ်နှစ်ရက်ရှိလဲ?",["၅ ရက်","၆ ရက်","၇ ရက်"],2]
 ];
-let products=JSON.parse(localStorage.getItem("mm_products")||"null")||defaults;
-let cart=JSON.parse(sessionStorage.getItem("mm_cart")||"[]");
-let selectedCategory="အားလုံး";
-const cats=["အားလုံး","အဝတ်အစား","ဖုန်းပစ္စည်း","အလှကုန်","အိမ်သုံးပစ္စည်း","အစားအသောက်","အခြား"];
-function persist(){localStorage.setItem("mm_products",JSON.stringify(products));sessionStorage.setItem("mm_cart",JSON.stringify(cart))}
-function showPage(id,btn){document.querySelectorAll(".page").forEach(x=>x.classList.remove("show"));document.getElementById(id).classList.add("show");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="cart")renderCart();if(id==="admin")renderAdmin()}
-function money(n){let cur=document.getElementById("currency")?.value||"MMK";let rate=Number(document.getElementById("rate")?.value)||3500;return cur==="USD"?"$"+(n/rate).toFixed(2):Number(n).toLocaleString()+" MMK"}
-function renderCategories(){document.getElementById("categories").innerHTML=cats.map(c=>`<button class="${selectedCategory===c?'selected':''}" onclick="selectedCategory='${c}';renderCategories();renderProducts()">${c}</button>`).join("")}
-function renderProducts(){let q=(document.getElementById("search")?.value||"").toLowerCase();let list=products.filter(p=>(selectedCategory==="အားလုံး"||p.category===selectedCategory)&&p.name.toLowerCase().includes(q));document.getElementById("productGrid").innerHTML=list.length?list.map(p=>`<article class="product">${p.image?`<img src="${p.image}" alt="">`:`<div style="height:145px;background:#f3eadc;border-radius:9px;display:grid;place-items:center;font-size:45px">🛍️</div>`}<h3>${esc(p.name)}</h3><div class="muted">${esc(p.category)}</div><div class="price">${money(p.price)}</div><div class="muted">${esc(p.description||"")}</div><button onclick="addCart(${p.id})">ခြင်းတောင်းထဲထည့်မည်</button></article>`).join(""):"<p>ဒီအမျိုးအစားတွင် ပစ္စည်းမရှိသေးပါ။</p>"}
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function addCart(id){let item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({id,qty:1});persist();updateCount();alert("ခြင်းတောင်းထဲ ထည့်ပြီးပါပြီ။")}
-function updateCount(){document.getElementById("cartCount").textContent=cart.reduce((a,x)=>a+x.qty,0)}
-function renderCart(){let box=document.getElementById("cartItems");if(!cart.length){box.innerHTML="ခြင်းတောင်းထဲတွင် ပစ္စည်းမရှိသေးပါ။";document.getElementById("cartTotal").textContent="စုစုပေါင်း: 0";return}box.innerHTML=cart.map(x=>{let p=products.find(y=>y.id===x.id);return p?`<div class="cart-row"><span>${esc(p.name)} × ${x.qty}<br><b>${money(p.price*x.qty)}</b></span><span><button onclick="changeQty(${x.id},-1)">−</button> <button onclick="changeQty(${x.id},1)">+</button></span></div>`:""}).join("");let total=cart.reduce((a,x)=>{let p=products.find(y=>y.id===x.id);return a+(p?p.price*x.qty:0)},0);document.getElementById("cartTotal").textContent="စုစုပေါင်း: "+money(total)}
-function changeQty(id,d){let x=cart.find(y=>y.id===id);if(x){x.qty+=d;if(x.qty<=0)cart=cart.filter(y=>y.id!==id)}persist();updateCount();renderCart()}
-function submitOrder(){if(!cart.length)return alert("ပစ္စည်းအရင်ရွေးပါ။");let name=document.getElementById("buyerName").value.trim(),phone=document.getElementById("buyerPhone").value.trim(),address=document.getElementById("buyerAddress").value.trim();if(!name||!phone||!address)return alert("အမည်၊ ဖုန်းနံပါတ်နဲ့ လိပ်စာ ဖြည့်ပါ။");let order={name,phone,address,payment:document.getElementById("payment").value,items:cart,created:new Date().toISOString()};let orders=JSON.parse(localStorage.getItem("mm_orders")||"[]");orders.push(order);localStorage.setItem("mm_orders",JSON.stringify(orders));cart=[];persist();updateCount();renderCart();document.getElementById("orderResult").innerHTML='<div class="notice">အော်ဒါအချက်အလက်ကို ဒီ Browser ထဲတွင် သိမ်းဆည်းပြီးပါပြီ။ ဆိုင်ရှင်ထံ အမှန်တကယ်ပို့ရန် Backend ချိတ်ဆက်ဖို့ လိုအပ်ပါသည်။</div>'}
-function addProduct(){let name=document.getElementById("pName").value.trim(),price=Number(document.getElementById("pPrice").value),category=document.getElementById("pCategory").value,description=document.getElementById("pDescription").value.trim(),file=document.getElementById("pImage").files[0];if(!name||!price||price<0)return alert("ပစ္စည်းအမည်နဲ့ ဈေးနှုန်း ဖြည့်ပါ။");let saveItem=image=>{products.push({id:Date.now(),name,price,category,description,image});persist();renderProducts();renderAdmin();document.getElementById("pName").value="";document.getElementById("pPrice").value="";document.getElementById("pDescription").value="";document.getElementById("pImage").value="";alert("ပစ္စည်းထည့်ပြီးပါပြီ။")};if(file){let r=new FileReader();r.onload=()=>saveItem(r.result);r.readAsDataURL(file)}else saveItem("")}
-function renderAdmin(){document.getElementById("adminList").innerHTML=products.map(p=>`<div class="cart-row"><span>${esc(p.name)} — ${money(p.price)}</span><button class="danger" onclick="deleteProduct(${p.id})">ဖျက်မည်</button></div>`).join("")||"ပစ္စည်းမရှိသေးပါ"}
-function deleteProduct(id){products=products.filter(p=>p.id!==id);persist();renderAdmin();renderProducts()}
-function clearProducts(){if(confirm("ပစ္စည်းအားလုံး ဖျက်မှာ သေချာပါသလား။")){products=[];persist();renderAdmin();renderProducts()}}
-renderCategories();renderProducts();updateCount();
+let q=qs[question];
+area.innerHTML="<p>"+q[0]+"</p>"+q[1].map((a,i)=>'<button style="margin:5px" onclick="quiz('+i+','+q[2]+')">'+a+'</button>').join("");
+}
+else if(game==="memory"){
+let cards=["🍎","🍌","🍇","🍎","🍌","🍇"].sort(()=>Math.random()-.5);
+first=null;
+area.innerHTML='<p>တူညီတဲ့ ပုံနှစ်ခုကို ရွေးပါ။</p><div class="games">'+cards.map((c,i)=>'<button id="m'+i+'" style="font-size:25px" onclick="memory(this,\''+c+'\')">❔</button>').join("")+'</div>';
+}
+else if(game==="reaction"){
+area.innerHTML='<p>ခလုတ်ကို အမြန်ဆုံးနှိပ်ပါ။</p><button onclick="win(5)">TAP!</button>';
+}
+else if(game==="puzzle"){
+area.innerHTML='<p>၂ + ၃ = ?</p><button onclick="puzzle(4)">4</button> <button onclick="puzzle(5)">5</button> <button onclick="puzzle(6)">6</button>';
+}
+else if(game==="snake"){
+area.innerHTML='<p>🐍 Snake ဂိမ်းကို နောက်ဗားရှင်းတွင် အပြည့်အစုံ ထည့်သွင်းပါမည်။</p><button onclick="win(2)">Demo အမှတ်ယူမယ်</button>';
+}
+else if(game==="tictactoe"){
+area.innerHTML='<p>⭕ Tic Tac Toe Demo</p><div class="games">'+Array.from({length:9},(_,i)=>'<button onclick="this.textContent=\'X\';win(2)" style="font-size:24px">　</button>').join("")+'</div>';
+}
+else if(game==="bubble"){
+area.innerHTML='<p>🫧 Bubble Demo</p><button onclick="win(2)">Bubble ပစ်မယ်</button>';
+}
+else if(game==="match"){
+area.innerHTML='<p>💎 Match 3 Demo</p><button onclick="win(2)">Match လုပ်မယ်</button>';
+}
+else{
+area.innerHTML='<p>2048 Demo</p><button onclick="win(2)">ကစားမယ်</button>';
+}
+}
+function guess(){
+let a=Number(document.getElementById("answer").value);
+if(a===secret)win(10);
+else document.getElementById("result").textContent="မမှန်သေးပါ။ ထပ်ကြိုးစားပါ။";
+}
+function quiz(a,b){
+if(a===b)win(10);
+else document.getElementById("result").textContent="အဖြေမှားနေပါတယ်။ ထပ်ကြိုးစားပါ။";
+}
+function puzzle(a){
+if(a===5)win(10);
+else document.getElementById("result").textContent="ထပ်စမ်းကြည့်ပါ။";
+}
+function memory(btn,c){
+if(btn.textContent!=="❔")return;
+btn.textContent=c;
+if(!first)first=btn;
+else{
+if(first.textContent===btn.textContent){
+win(5);
+}else{
+let old=first;
+setTimeout(()=>{old.textContent="❔";btn.textContent="❔";},700);
+}
+first=null;
+}
+}
+update();
 </script>
 </body>
 </html>
